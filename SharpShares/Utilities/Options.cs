@@ -23,6 +23,8 @@ namespace SharpShares.Utilities
             public string ou = null;
             public string outfile = null;
             public string targets = null;
+            public string infile = null;
+            public string computer = null;
         }
         public static Dictionary<string, string[]> ParseArgs(string[] args)
         {
@@ -83,6 +85,14 @@ namespace SharpShares.Utilities
             {
                 arguments.targets = parsedArgs["/targets"][0];
             }
+            if (parsedArgs.ContainsKey("/infile"))
+            {
+                arguments.infile = parsedArgs["/infile"][0];
+            }
+            if (parsedArgs.ContainsKey("/computer"))
+            {
+                arguments.computer = parsedArgs["/computer"][0];
+            }
             if (parsedArgs.ContainsKey("/threads"))
             {
                 arguments.threads = Convert.ToInt32(parsedArgs["/threads"][0]);
@@ -102,9 +112,9 @@ namespace SharpShares.Utilities
                 arguments = null;
             }
             // if no ldap or ou filter specified, search all enabled computer objects
-            if (!(parsedArgs.ContainsKey("/ldap")) && !(parsedArgs.ContainsKey("/ou")))
+            if (!(parsedArgs.ContainsKey("/ldap")) && !(parsedArgs.ContainsKey("/ou")) && !(parsedArgs.ContainsKey("/targets")) && !(parsedArgs.ContainsKey("/infile")) && !(parsedArgs.ContainsKey("/computer")))
             {
-                Console.WriteLine("[!] Must specify hosts using one of the following arguments: /ldap /ou");
+                Console.WriteLine("[!] Must specify hosts using one of the following arguments: /ldap /ou /targets /infile /computer");
                 Utilities.Options.Usage();
                 //Environment.Exit(0);
                 arguments = null;
@@ -115,6 +125,9 @@ namespace SharpShares.Utilities
         {
             bool success = true;
             Console.WriteLine("[+] Parsed Arguments:");
+            Console.WriteLine($"\tinfile: {arguments.targets}");
+            Console.WriteLine($"\ttargets: {arguments.targets}");
+            Console.WriteLine($"\tcomputer: {arguments.computer}");
             Console.WriteLine("\tfilter: none");
             if (arguments.filter != null)
                 Console.WriteLine($"\tfilter: {String.Join(",", arguments.filter)}");
@@ -172,6 +185,9 @@ Usage:
     SharpShares.exe /threads:50 /ldap:servers /ou:""OU=Special Servers,DC=example,DC=local"" /filter:SYSVOL,NETLOGON,IPC$,PRINT$ /verbose /outfile:C:\path\to\file.txt
 
 Optional Arguments:
+    /infile   - OFFLINE : specify targets from file (one by line)
+    /targets  - target range provided in CIDR notation (e.g. 192.168.100.0/24) or in the format 192.168.0-255.0-255.
+    /computer - specify specific computer (Name or IP)
     /threads  - specify maximum number of parallel threads  (default=25)
     /dc       - specify domain controller to query (if not ran on a domain-joined host)
     /domain   - specify domain name (if not ran on a domain-joined host)

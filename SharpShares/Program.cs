@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 
 namespace SharpShares
@@ -29,6 +30,19 @@ namespace SharpShares
                         List<string> ou = Utilities.LDAP.SearchOU(arguments);
                         if (ou != null) 
                             hosts = hosts.Concat(ou).ToList();
+                    }
+                    if (!String.IsNullOrEmpty(arguments.targets))
+                    {
+                        hosts = new SharpShares.Utilities.IPRange(arguments.targets).GetAllIP().Select(ip => ip.ToString()).ToList();
+                    }
+                    if (!String.IsNullOrEmpty(arguments.infile))
+                    {
+                        hosts = File.ReadAllLines(arguments.infile).ToList();
+                        Console.WriteLine($"Read all targets from {arguments.infile}");
+                    }
+                    if (!String.IsNullOrEmpty(arguments.computer))
+                    {
+                        hosts = ((arguments.computer).Split(',')).ToList();
                     }
                     //remove duplicate hosts
                     hosts = hosts.Distinct().ToList();
