@@ -1,7 +1,7 @@
 # SharpShares
 Multithreaded C# .NET Assembly to enumerate accessible network shares in a domain
 
-Built upon [djhohnstein's SharpShares](https://github.com/djhohnstein/SharpShares) project
+Built upon [djhohnstein's SharpShares](https://github.com/djhohnstein/SharpShares) project with PR for /targets:IP
 
 ```
 > .\SharpShares.exe help
@@ -10,6 +10,9 @@ Usage:
     SharpShares.exe /threads:50 /ldap:servers /ou:"OU=Special Servers,DC=example,DC=local" /filter:SYSVOL,NETLOGON,IPC$,PRINT$ /verbose /outfile:C:\path\to\file.txt
 
 Optional Arguments:
+    /infile   - OFFLINE : specify targets from file (one by line)
+    /targets  - target range provided in CIDR notation (e.g. 192.168.100.0/24) or in the format 192.168.0-255.0-255.
+    /computer - specify specific computer (Name or IP)
     /threads  - specify maximum number of parallel threads  (default=25)
     /dc       - specify domain controller to query (if not ran on a domain-joined host)
     /domain   - specify domain name (if not ran on a domain-joined host)
@@ -35,6 +38,9 @@ execute-assembly /path/to/SharpShares.exe /ldap:all /filter:sysvol,netlogon,ipc$
 ## Example Output
 ```
 [+] Parsed Aguments:
+	    infile:
+	    targets:
+	    computer: 
         threads: 25
         ldap: all
         ou: none
