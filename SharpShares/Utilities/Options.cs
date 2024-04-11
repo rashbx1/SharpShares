@@ -125,7 +125,7 @@ namespace SharpShares.Utilities
         {
             bool success = true;
             Console.WriteLine("[+] Parsed Arguments:");
-            Console.WriteLine($"\tinfile: {arguments.targets}");
+            Console.WriteLine($"\tinfile: {arguments.infile}");
             Console.WriteLine($"\ttargets: {arguments.targets}");
             Console.WriteLine($"\tcomputer: {arguments.computer}");
             Console.WriteLine("\tfilter: none");
